@@ -1,4 +1,5 @@
-ID=0;
+ID = 0;
+
 var express = require('express');
 var app = express();
 var fs = require('fs');
@@ -13,27 +14,27 @@ fs.exists('./items.json', function (exists) {
         fs.open('./items.json', 'a', function (err, fd) {
             if (err)
                 console.log('创建文件失败')
-            else{
+            else {
                 fs.writeFile('items.json', '[]', function (err) {
-                    if(err)
-                        throw err;
-                }
+                        if (err)
+                            throw err;
+                    }
                 );
             }
         });
 });
 
-var insertOne=require('./insertOne');
-var removeOne=require('./removeOne');
-var updateOne=require('./updateOne');
-var findOne=require('./findOne');
-var findAll=require('./findAll');
+var insertOne = require('./insertOne');
+var removeOne = require('./removeOne');
+var updateOne = require('./updateOne');
+var findOne = require('./findOne');
+var findAll = require('./findAll');
 
-app.use('/',insertOne);
-app.use('/',removeOne);
-app.use('/',updateOne);
-app.use('/',findOne);
-app.use('/',findAll);
+app.use('/', insertOne);
+app.use('/', removeOne);
+app.use('/', updateOne);
+app.use('/', findOne);
+app.use('/', findAll);
 
 var server = app.listen(3000, function () {
     var host = server.address().address;

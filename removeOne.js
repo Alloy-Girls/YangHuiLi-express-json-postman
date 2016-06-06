@@ -14,7 +14,7 @@ app.delete("/products/:id", function (req, res) {
                 if (data[i]['id'] == req.params.id)
                     data.splice(i, 1);
             }
-            if(length==data.length)
+            if (length == data.length)
                 res.status(404).end();
             else
                 res.status(204).end();
