@@ -33,6 +33,7 @@ function updateElement(item, existSameId) {
 
     return newItem;
 }
+
 function judgeType(item) {
     var valueType = {};
 

@@ -13,7 +13,7 @@ fs.exists('./items.json', function (exists) {
     if (!exists)
         fs.open('./items.json', 'a', function (err, fd) {
             if (err)
-                console.log('创建文件失败')
+                console.log('创建文件失败');
             else {
                 fs.writeFile('items.json', '[]', function (err) {
                         if (err)
