@@ -21,7 +21,7 @@ app.get("/products/:id", function (req, res) {
             data = JSON.parse(data);
             var exist = existId(data, id);
             if (exist)
-                res.status(404).json(exist);
+                res.status(200).json(exist);
             else
                 res.status(404).end();
         }
