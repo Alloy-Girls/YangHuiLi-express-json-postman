@@ -16,14 +16,14 @@ app.get("/products/:id", function (req, res) {
     fs.readFile("items.json", "utf-8", function (err, data) {
         var id = req.params.id;
         if (err)
-            res.status(404).send("404");
+            res.status(404).end();
         else {
             data = JSON.parse(data);
             var exist = existId(data, id);
             if (exist)
                 res.status(404).json(exist);
             else
-                res.send("404");
+                res.status(404).end();
         }
     });
 });
