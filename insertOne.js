@@ -44,7 +44,7 @@ function resolveErr(item, data, res) {
     if (length < 5) {
         element = getElement(item);
         data.push(element);
-        res.status(401).end();
+        res.status(400).end();
     }
     else if (valueType.id != "number" || valueType.barcode != "string" || valueType.name != "string" || valueType.unit != "string" || valueType.price != "number") {
         res.status(401).end();
@@ -52,7 +52,7 @@ function resolveErr(item, data, res) {
     else {
         element = getElement(item);
         data.push(element);
-        res.status(201).json(element);
+        res.status(200).json(element);
     }
 
     return data;
@@ -65,20 +65,10 @@ app.post("/products", function (req, res) {
         if (err)
             throw err;
         else {
-
-            if (data === "[]") {
                 data = JSON.parse(data);
                 ID = ID + 1;
                 item.id = ID;
                 data = resolveErr(item, data, res);
-            }
-            else {
-                data = JSON.parse(data);
-                ID = ID + 1;
-                item.id = ID;
-                data = resolveErr(item, data, res);
-
-            }
             fs.writeFile("items.json", JSON.stringify(data), function (err) {
                 if (err)
                     throw err;

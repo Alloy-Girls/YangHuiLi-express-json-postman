@@ -16,7 +16,7 @@ app.get("/products/:id", function (req, res) {
     fs.readFile("items.json", "utf-8", function (err, data) {
         var id = req.params.id;
         if (err)
-            res.status(404).end();
+            throw err;
         else {
             data = JSON.parse(data);
             var exist = existId(data, id);
