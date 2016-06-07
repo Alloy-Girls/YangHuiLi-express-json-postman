@@ -4,10 +4,10 @@ var express = require('express');
 var app = express();
 var fs = require('fs');
 var bodyParser = require('body-parser');
-app.use(bodyParser.json({limit: '1mb'}));  //body-parser 解析json格式数据
-app.use(bodyParser.urlencoded({            //此项必须在 bodyParser.json 下面,为参数编码
+app.use(bodyParser.json());  //body-parser 解析json格式数据
+/*app.use(bodyParser.urlencoded({            //此项必须在 bodyParser.json 下面,为参数编码
     extended: false
-}));
+}));*/
 
 fs.exists('./items.json', function (exists) {
     if (!exists)
@@ -24,19 +24,13 @@ fs.exists('./items.json', function (exists) {
         });
 });
 
-var insertOne = require('./insertOne');
-var removeOne = require('./removeOne');
-var updateOne = require('./updateOne');
-var findOne = require('./findOne');
-var findAll = require('./findAll');
+app.use('/', require('./insert-one'));
+app.use('/', require('./remove-one'));
+app.use('/', require('./update-one'));
+app.use('/', require('./find-one'));
+app.use('/', require('./find-all'));
 
-app.use('/', insertOne);
-app.use('/', removeOne);
-app.use('/', updateOne);
-app.use('/', findOne);
-app.use('/', findAll);
-
-var server = app.listen(3000, function () {
+app.listen(3000, function () {
     var host = server.address().address;
     var port = server.address().port;
 
