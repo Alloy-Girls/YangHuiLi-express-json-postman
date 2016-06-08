@@ -3,13 +3,12 @@ var app = express();
 var fs = require('fs');
 
 function existId(data, id) {
-    var exist;
 
     for (var i = 0; i < data.length; i++)
-        if (data[i].id == id)
-            exist = data[i];
+        if (data[i].id == id){
+            return data[i];
+        }
 
-    return exist;
 }
 
 app.get("/products/:id", function (req, res) {
@@ -20,10 +19,12 @@ app.get("/products/:id", function (req, res) {
         else {
             data = JSON.parse(data);
             var exist = existId(data, id);
-            if (exist)
+            if (exist){
                 res.status(200).json(exist);
-            else
-                res.status(404).end();
+            }
+            else{
+                res.status(404).send();
+            }
         }
     });
 });

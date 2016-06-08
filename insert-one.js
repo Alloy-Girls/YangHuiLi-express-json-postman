@@ -25,34 +25,31 @@ function getElement(item) {
 }
 
 function judgeType(item) {
-    var valueType = {};
 
-    valueType.id = typeof(item.id);
-    valueType.barcode = typeof(item.barcode);
-    valueType.name = typeof(item.name);
-    valueType.unit = typeof(item.unit);
-    valueType.price = typeof(item.price);
+    if(typeof(item.barcode) === "string" && typeof(item.name) === "string" && typeof(item.unit) === "string" && typeof(item.price) === "number"){
+        return true;
+    }
 
-    return valueType;
 }
 
 function resolveErr(item, data, res) {
     var element;
 
     var length = buildLength(item);
-    var valueType = judgeType(item);
-    if (length < 5) {
+
+
+    if(judgeType(item)){
+        element = getElement(item);
+        data.push(element);
+        res.status(200).json(element);
+    }
+    else if(length<5){
         element = getElement(item);
         data.push(element);
         res.status(400).end();
     }
-    else if (valueType.id != "number" || valueType.barcode != "string" || valueType.name != "string" || valueType.unit != "string" || valueType.price != "number") {
-        res.status(401).end();
-    }
     else {
-        element = getElement(item);
-        data.push(element);
-        res.status(200).json(element);
+        res.status(401).end();
     }
 
     return data;
@@ -65,10 +62,10 @@ app.post("/products", function (req, res) {
         if (err)
             throw err;
         else {
-                data = JSON.parse(data);
-                ID = ID + 1;
-                item.id = ID;
-                data = resolveErr(item, data, res);
+            data = JSON.parse(data);
+            ID = ID + 1;
+            item.id = ID;
+            data = resolveErr(item, data, res);
             fs.writeFile("items.json", JSON.stringify(data), function (err) {
                 if (err)
                     throw err;
