@@ -1,4 +1,5 @@
 ID = 0;
+fileName = "items.json";
 
 var express = require('express');
 var app = express();
@@ -21,13 +22,14 @@ fs.exists('./items.json', function (exists) {
         });
 });
 
-app.use('/', require('./insert-one'));
-app.use('/', require('./remove-one'));
-app.use('/', require('./update-one'));
-app.use('/', require('./find-one'));
-app.use('/', require('./find-all'));
+app.post("/products",require("./insert-one").insertOne);
+app.delete("/products/:id",require("./remove-one").removeOne);
+app.put("/products/:id",require("./update-one").updateOne);
+app.get("/products/:id",require("./find-one").findOne);
+app.get("/products",require("./find-all").findAll);
 
-app.listen(3000, function () {
+
+var server = app.listen(3000, function () {
     var host = server.address().address;
     var port = server.address().port;
 
@@ -35,6 +37,8 @@ app.listen(3000, function () {
 });
 
 module.exports = app;
+
+
 
 
 

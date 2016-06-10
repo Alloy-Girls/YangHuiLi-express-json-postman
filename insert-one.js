@@ -1,16 +1,4 @@
-var express = require("express");
-var app = express();
 var fs = require("fs");
-
-function buildLength(object) {
-    var length = 0;
-    var i;
-
-    for (i in object)
-        length++;
-
-    return length;
-}
 
 function getElement(item) {
     var element = {};
@@ -25,53 +13,35 @@ function getElement(item) {
 }
 
 function judgeType(item) {
-
-    if(typeof(item.barcode) === "string" && typeof(item.name) === "string" && typeof(item.unit) === "string" && typeof(item.price) === "number"){
-        return true;
+    var newItem = getElement(item);
+    if (typeof(newItem.barcode) !== "string" || typeof(newItem.name) !== "string" || typeof(newItem.unit) !== "string" || typeof(newItem.price) !== "number" || typeof(newItem.id) !== "number") {
+        return;
     }
-
+    else {
+        return newItem;
+    }
 }
 
-function resolveErr(item, data, res) {
-    var element;
-
-    var length = buildLength(item);
-
-
-    if(judgeType(item)){
-        element = getElement(item);
-        data.push(element);
-        res.status(200).json(element);
-    }
-    else if(length<5){
-        element = getElement(item);
-        data.push(element);
+function insertOne(req, res) {
+    var data = JSON.parse(fs.readFileSync("./items.json"));
+    ID = ID + 1;
+    req.body.id = ID;
+    var correctType = judgeType(req.body);
+    if (!correctType) {
         res.status(400).end();
     }
     else {
-        res.status(401).end();
+        data.push(correctType);
+        res.status(200).json(correctType);
     }
-
-    return data;
-}
-
-app.post("/products", function (req, res) {
-    var item = req.body;
-
-    fs.readFile("items.json", "utf-8", function (err, data) {
+    fs.writeFile("items.json", JSON.stringify(data), function (err) {
         if (err)
             throw err;
-        else {
-            data = JSON.parse(data);
-            ID = ID + 1;
-            item.id = ID;
-            data = resolveErr(item, data, res);
-            fs.writeFile("items.json", JSON.stringify(data), function (err) {
-                if (err)
-                    throw err;
-            });
-        }
     });
-});
+}
 
-module.exports = app;
+exports.insertOne = insertOne;
+
+
+
+
