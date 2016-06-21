@@ -19,7 +19,7 @@ function findOne(req, res) {
             if (exist)
                 res.status(200).json(exist);
             else
-                res.status(404).end();
+                res.status(404).end()
         }
     });
 }
