@@ -22,7 +22,7 @@ function judgeType(item) {
     }
 }
 
-function insertOne(req, res) {
+function insertOne(req, res, next) {
     var data = JSON.parse(fs.readFileSync("./items.json"));
     ID = ID + 1;
     req.body.id = ID;
@@ -36,7 +36,7 @@ function insertOne(req, res) {
     }
     fs.writeFile("items.json", JSON.stringify(data), function (err) {
         if (err)
-            throw err;
+            next(err);
     });
 }
 

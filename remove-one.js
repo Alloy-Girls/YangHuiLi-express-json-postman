@@ -9,7 +9,7 @@ function returnItemsCount(id, data) {
     return data.length;
 }
 
-function removeOne(req, res) {
+function removeOne(req, res, next) {
     fs.readFile(fileName, "utf-8", function (err, data) {
         if (err)
             throw err;
@@ -22,7 +22,7 @@ function removeOne(req, res) {
             else {
                 fs.writeFile(fileName, JSON.stringify(data), function (err) {
                     if (err)
-                        throw err;
+                        next(err);
                     res.status(204).end();
                 });
             }

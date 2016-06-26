@@ -47,7 +47,7 @@ function updateOne(req, res) {
     }
     fs.writeFile("items.json", JSON.stringify(data), function (err) {
         if (err)
-            throw err;
+            next(err);
     });
 }
 

@@ -12,7 +12,7 @@ function findOne(req, res) {
     fs.readFile(fileName, "utf-8", function (err, data) {
         var id = req.params.id;
         if (err)
-            throw err;
+            next(err);
         else {
             data = JSON.parse(data);
             var exist = existId(data, id);
